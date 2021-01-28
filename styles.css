@@ -57,8 +57,10 @@ body{
 
 .hold--cell--msg {
     position: absolute;
-    top:20%;
-    left: 25%;
+    text-align: center;
+    width: 100%;
+    /* border: 2px solid blue; */
+    top:15%;
     opacity: .4;
 }
 
