@@ -3,6 +3,7 @@
 const diceRoll = document.querySelector(".dice--reroll");
 const diceHold = document.querySelector(".dice--hold");
 const $btnRollDice = document.getElementById("btn--roll")
+const $btnCheckScore = document.getElementById("btn--score");
 
 
 let holdArr = [];
@@ -52,14 +53,19 @@ function drawDice(diceArr, holdArr) {
     
 }
 
+//TODO Replace later
 $btnRollDice.addEventListener("click", function(){
-    diceArr = roll(); //TODO Replace later
+    diceArr = roll(); 
     // console.log(roll(5));
 });
 
+$btnCheckScore.addEventListener("click", function() {
+    console.log(determineScores(diceArr, holdArr));
+})
+
 
 /*
-----------Drag and Drop Functionality------------
+----------Drag and Drop Dice Functionality------------
 */
 
 function allowDrop(ev) {
@@ -92,8 +98,9 @@ function drop(ev){
 /*
 ----------Scoring------------
 */
-function determineScores() {
-    const scoreArr = holdArr.concat(...diceArr).sort();
+function determineScores(hold, dice) {
+    const scoreArr = hold.concat(...dice).sort();
+    drawDice([], scoreArr);
     let score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     console.log(scoreArr);
 
@@ -127,12 +134,12 @@ function determineScores() {
 
     //Scoring Conditions
     //3x Kind + 4x Kind -- Add all dice
-    if (tempArr.includes(3) || tempArr.includes(4) || tempArr.includes(5)) {
+    if (tempArr.includes(3)){
         console.log(`3x Kind!`)
         score[6] = scoreArr.reduce(function(a,b) {return a+b});
 
     }
-    if (tempArr.includes(4) || tempArr.includes(5)) {
+    if (tempArr.includes(4)) {
         console.log(`4x Kind!`)
         score[7] = scoreArr.reduce(function(a,b) {return a+b});
 
@@ -143,19 +150,20 @@ function determineScores() {
         score[8] = 25;
     }
     //Small and Large Straights -- 30 + 40 points
-    if(seqArr.includes(5)){
-        console.log(`Large Straight!`)
-        score[10] = 40;
-    } 
     if(seqArr.includes(4)){
         console.log(`Small Straight!`)
         score[9] = 30;
     }
+
+    if(seqArr.includes(5)){
+        console.log(`Large Straight!`)
+        score[10] = 40;
+    } 
+
     //Yahtzee! -- 100 points
     if (tempArr.includes(5)) {
         console.log(`Yahtzee!`)
         score[11] = 100;
-
     }
 
 
