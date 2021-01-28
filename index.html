@@ -13,14 +13,23 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
+        <script src="app.js" async defer></script>
         <div class="main--container">
-            <div class="scoreboard">
-            </div>
+            <div class="active--player">Player 1's Turn</div>
             <div class="game--area">
-                
+                <div class="dice--area">
+                    <span class="hold--cell--msg">Drag dice here to hold</span>
+                    <div class="dice--hold" onDrop = "drop(event)" ondragover="allowDrop(event)">
+                    </div>
+                    <div class="dice--reroll" onDrop = "drop(event)" ondragover="allowDrop(event)">
+                        <span>DICE</span>
+                    </div>
+                </div>
+                <button class="btn" id="btn--roll">Roll Dice</button>
+            </div>
+            <div class="scoreboard">
             </div>
         </div>
         
-        <script src="app.js" async defer></script>
     </body>
 </html>
