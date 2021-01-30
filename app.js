@@ -4,8 +4,11 @@ const diceRoll = document.querySelector(".dice--reroll");
 const diceHold = document.querySelector(".dice--hold");
 const $btnRollDice = document.getElementById("btn--roll")
 const $btnCheckScore = document.getElementById("btn--score");
+const $btnCloseScreen = document.getElementById("btn--close");
 
+const $windowScores = document.querySelector(".score--container");
 
+// const game => (() {
 let holdArr = [];
 let diceArr = [];
 
@@ -22,6 +25,30 @@ function roll(){
 
     return diceArr;
 }
+
+
+
+
+/*
+----------Buttons n Sich------------
+*/
+
+$btnCloseScreen.addEventListener("click", toggleScoreScreen);
+
+//TODO Replace later - currently only for functionality
+$btnRollDice.addEventListener("click", function(){
+    diceArr = roll(); 
+    // console.log(roll(5));
+});
+
+$btnCheckScore.addEventListener("click", function() {
+    console.log(determineScores(diceArr, holdArr));
+    toggleScoreScreen(determineScores(diceArr, holdArr));
+})
+
+/*
+----------Rendering------------
+*/
 
 function drawDice(diceArr, holdArr) {
     diceRoll.innerHTML = "";
@@ -53,16 +80,15 @@ function drawDice(diceArr, holdArr) {
     
 }
 
-//TODO Replace later
-$btnRollDice.addEventListener("click", function(){
-    diceArr = roll(); 
-    // console.log(roll(5));
-});
+function toggleScoreScreen(scoreArr) {
+    const __scoreBTN = document.querySelectorAll(".btn--score");
+    for(let i = 0; i < __scoreBTN.length; i++){
+        __scoreBTN[i].value = scoreArr[i];
+        __scoreBTN[i].innerHTML = `${__scoreBTN[i].value} Points`;
+    }
 
-$btnCheckScore.addEventListener("click", function() {
-    console.log(determineScores(diceArr, holdArr));
-})
-
+    $windowScores.classList.toggle("hidden");
+}
 
 /*
 ----------Drag and Drop Dice Functionality------------
@@ -76,7 +102,6 @@ function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
 }
 
-//TODO dragging to same space creates duplicates
 function drop(ev){
     ev.preventDefault();
     let data = ev.dataTransfer.getData("text");
@@ -100,9 +125,8 @@ function drop(ev){
 */
 function determineScores(hold, dice) {
     const scoreArr = hold.concat(...dice).sort();
-    drawDice([], scoreArr);
+    drawDice([], []);
     let score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    console.log(scoreArr);
 
     //Upper Board Scores
     for(let i = 1; i <=5; i++){
@@ -126,43 +150,36 @@ function determineScores(hold, dice) {
         }
         else if(scoreArr[i] === scoreArr[i-1]){}
         else sequence = 1;
-        console.log(`sequence: ${sequence}, ${seqArr}`);
         tempArr.push(count)
-        console.log(tempArr)
 
     }
 
     //Scoring Conditions
+
     //3x Kind + 4x Kind -- Add all dice
     if (tempArr.includes(3)){
-        console.log(`3x Kind!`)
         score[6] = scoreArr.reduce(function(a,b) {return a+b});
 
     }
     if (tempArr.includes(4)) {
-        console.log(`4x Kind!`)
         score[7] = scoreArr.reduce(function(a,b) {return a+b});
 
     }
     //Full House -- 25 Points
     if(tempArr.sort() === [2,3]){
-        console.log(`Full House!`);
         score[8] = 25;
     }
-    //Small and Large Straights -- 30 + 40 points
+    //Small / Large Straights -- 30 / 40 points
     if(seqArr.includes(4)){
-        console.log(`Small Straight!`)
         score[9] = 30;
     }
 
     if(seqArr.includes(5)){
-        console.log(`Large Straight!`)
         score[10] = 40;
     } 
 
     //Yahtzee! -- 100 points
     if (tempArr.includes(5)) {
-        console.log(`Yahtzee!`)
         score[11] = 100;
     }
 
