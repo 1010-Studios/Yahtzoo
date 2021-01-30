@@ -13,7 +13,7 @@ let holdArr = [];
 let diceArr = [];
 
 /*
-----------Dice Rolling and Drawing------------
+----------Dice Rolling------------
 */
 
 function roll(){
@@ -25,8 +25,6 @@ function roll(){
 
     return diceArr;
 }
-
-
 
 
 /*
@@ -45,6 +43,7 @@ $btnCheckScore.addEventListener("click", function() {
     console.log(determineScores(diceArr, holdArr));
     toggleScoreScreen(determineScores(diceArr, holdArr));
 })
+
 
 /*
 ----------Rendering------------
@@ -90,6 +89,7 @@ function toggleScoreScreen(scoreArr) {
     $windowScores.classList.toggle("hidden");
 }
 
+
 /*
 ----------Drag and Drop Dice Functionality------------
 */
@@ -120,12 +120,13 @@ function drop(ev){
     drawDice(diceArr, holdArr)
 }
 
+
 /*
 ----------Scoring------------
 */
 function determineScores(hold, dice) {
     const scoreArr = hold.concat(...dice).sort();
-    drawDice([], []);
+    // drawDice([], []);
     let score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     //Upper Board Scores
@@ -186,6 +187,7 @@ function determineScores(hold, dice) {
 
     return score;
 }
+
 
 /*
 ----------Players------------
